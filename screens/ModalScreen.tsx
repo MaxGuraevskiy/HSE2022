@@ -1,18 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import React, {useContext} from "react";
+import { Button, Platform, StyleSheet } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import { OpenSansBold, OpenSansRegular } from "../components/StyledText";
+import { View } from "../components/Themed";
+import { userContext } from "../navigation";
 
-export default function ModalScreen() {
+export default function ModalScreen({ navigation, route }: any) {
+  const {user, setUser} = useContext(userContext);
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Modal</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/ModalScreen.tsx" />
-
+      <OpenSansBold>Вы выходите из аккаунта</OpenSansBold>
+      <OpenSansRegular>Мы надеемся, вы нас не покидаете...</OpenSansRegular>
+      <OpenSansRegular>Подтвердите выход</OpenSansRegular>
+      <Ionicons.Button
+        onPress={() => {
+          navigation.navigate('Profile')
+          setUser({id: user.id, name: '', email: 'Войдите в аккаунт', password: ''})
+        }}
+        name={'ios-arrow-back-circle-outline'}
+      />
       {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+      <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
     </View>
   );
 }
@@ -20,16 +30,7 @@ export default function ModalScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
